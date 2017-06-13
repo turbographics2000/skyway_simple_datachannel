@@ -23,6 +23,7 @@ peer.on('open', id => {
 });
 
 peer.on('call', call => {
+    callSetup();
 });
 
 peer.on('connection', dc => {

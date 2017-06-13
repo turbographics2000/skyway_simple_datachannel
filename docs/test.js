@@ -27,7 +27,7 @@ peer.on('connection', function (dc) {
     });
 });
 
-btnStart.onclick = evt {
+btnStart.onclick = evt => {
     dc = peer.connect('dest-peer-id');
 };
 

@@ -37,7 +37,7 @@ function dcSetup(dc) {
         console.log('dc "onopen"');
     });
     // メッセージを送信
-    conn.send('Hello!');
+    dc.send('Hello!');
 }
 
 function getRmoteIds() {

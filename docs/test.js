@@ -41,7 +41,7 @@ function callSetup(call) {
     }
     call.on('stream', stream => {
         remoteView.srcObject = stream;
-    })
+    });
 }
 function dcSetup(dc) {
     inputMessage.style.display = '';

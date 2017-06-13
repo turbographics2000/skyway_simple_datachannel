@@ -32,6 +32,9 @@ function dcSetup(dc) {
     }
     dc.on('data', function (data) {
         console.log('Received', data);
+        var div = docuemnt.createElement('div');
+        div.textContent = data;
+        messageContainer.insertBefore(div, messageContainer.firstChild);
     });
     dc.on('open', function () {
         console.log('dc "onopen"');

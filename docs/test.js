@@ -2,10 +2,14 @@ var debugLevel = null;
 var myId = null;
 var apiKey = 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c';
 var peer = new Peer({ key: apiKey, /*debug: 3*/ });
+var call = null;
 var dc = null;
 
 btnStart.onclick = evt => {
     dc = peer.connect(callTo.value);
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        call = peer.call(callTo.value, stream);
+    });
     dcSetup(dc);
 };
 
@@ -16,7 +20,11 @@ peer.on('open', id => {
     getRmoteIds();
 });
 
-peer.on('connection', function (dc) {
+peer.on('call', call => {
+    call.
+});
+
+peer.on('connection', dc => {
     dcSetup(dc);
 });
 

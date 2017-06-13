@@ -6,7 +6,7 @@ var call = null;
 var dc = null;
 
 btnStart.onclick = evt => {
-    dc = peer.connect(callTo.value);
+    dc = peer.connect(callTo.value, { serialization: 'none' });
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
         localView.srcObject = stream;
         call = peer.call(callTo.value, stream);

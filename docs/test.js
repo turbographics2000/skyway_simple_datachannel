@@ -48,6 +48,7 @@ function dcSetup(dc) {
     inputMessage.onkeyup = evt => {
         if (evt.keyCode === 13) {
             if (inputMessage.value) {
+                addMessage(inputMessage.value);
                 dc.send(inputMessage.value);
             }
             inputMessage.value = '';
@@ -55,15 +56,19 @@ function dcSetup(dc) {
     }
     dc.on('data', function (data) {
         console.log('Received', data);
-        var div = document.createElement('div');
-        div.textContent = data;
-        messageContainer.insertBefore(div, messageContainer.firstChild);
+        addMessage(data);
     });
     dc.on('open', function () {
         console.log('dc "onopen"');
     });
     // メッセージを送信
     dc.send('Hello!');
+}
+
+function addMessage(msg) {
+    var div = document.createElement('div');
+    div.textContent = msg;
+    messageContainer.insertBefore(div, messageContainer.firstChild);
 }
 
 function getRmoteIds() {

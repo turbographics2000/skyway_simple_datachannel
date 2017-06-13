@@ -3,16 +3,19 @@ var myId = null;
 var apiKey = 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c';
 var peer = new Peer({ key: apiKey, /*debug: 3*/ });
 var call = null;
-var dc = null;
+var textDC = null;
+var binaryDC = null;
 
 btnStart.onclick = evt => {
-    dc = peer.connect(callTo.value, { serialization: 'none' });
+    textDC = peer.connect(callTo.value, { serialization: 'none', label: 'textDC' });
+    binaryDC = peer.connect(callTo.value, { serialization: 'binary', label: 'binaryDC' });
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
         localView.srcObject = stream;
         call = peer.call(callTo.value, stream);
         callSetup(call);
     });
-    dcSetup(dc);
+    textDCSetup(textDC);
+    binaryDCSetup(binaryDC);
 };
 
 peer.on('open', id => {
@@ -27,7 +30,11 @@ peer.on('call', call => {
 });
 
 peer.on('connection', dc => {
-    dcSetup(dc);
+    if (dc.label === 'textDC') {
+        textDCSetup(dc);
+    } else {
+        binaryDCSetup(dc);
+    }
 });
 
 function callSetup(call) {
@@ -43,7 +50,8 @@ function callSetup(call) {
         remoteView.srcObject = stream;
     });
 }
-function dcSetup(dc) {
+
+function textDCSetup(dc) {
     inputMessage.style.display = '';
     inputMessage.onkeyup = evt => {
         if (evt.keyCode === 13) {
@@ -59,10 +67,22 @@ function dcSetup(dc) {
         addMessage(data);
     });
     dc.on('open', function () {
-        console.log('dc "onopen"');
+        console.log('textDC "onopen"');
+        // メッセージを送信
+        textDC.send('Hello!');
     });
-    // メッセージを送信
-    dc.send('Hello!');
+}
+
+function binaryDCSetup(dc) {
+    dc.on('data', function (data) {
+        console.log('Received', data);
+        addMessage(data);
+    });
+    dc.on('open', function () {
+        console.log('binaryDC "onopen"');
+        // メッセージを送信
+        textDC.send('Hello!');
+    });
 }
 
 function addMessage(msg) {

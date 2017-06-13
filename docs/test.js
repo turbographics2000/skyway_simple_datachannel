@@ -21,23 +21,23 @@ peer.on('connection', function (dc) {
 });
 
 function dcSetup(dc) {
-    dc.on('open', function () {
-        inputMessage.style.display = '';
-        inputMessage.onkeyup = evt => {
-            if (evt.keyCode === 13) {
-                if (inputMessage.value) {
-                    dc.send(inputMessage.value);
-                }
-                inputMessage.value = '';
+    inputMessage.style.display = '';
+    inputMessage.onkeyup = evt => {
+        if (evt.keyCode === 13) {
+            if (inputMessage.value) {
+                dc.send(inputMessage.value);
             }
+            inputMessage.value = '';
         }
-        console.log('dc "onopen"');
-        dc.on('data', function (data) {
-            console.log('Received', data);
-        });
-        // メッセージを送信
-        conn.send('Hello!');
+    }
+    dc.on('data', function (data) {
+        console.log('Received', data);
     });
+    dc.on('open', function () {
+        console.log('dc "onopen"');
+    });
+    // メッセージを送信
+    conn.send('Hello!');
 }
 
 function getRmoteIds() {

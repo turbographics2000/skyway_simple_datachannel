@@ -80,8 +80,6 @@ function binaryDCSetup(dc) {
     });
     dc.on('open', function () {
         console.log('binaryDC "onopen"');
-        // メッセージを送信
-        textDC.send('Hello!');
     });
 }
 

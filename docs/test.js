@@ -8,6 +8,7 @@ var dc = null;
 btnStart.onclick = evt => {
     dc = peer.connect(callTo.value);
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        localView.srcObject = stream;
         call = peer.call(callTo.value, stream);
     });
     dcSetup(dc);
@@ -21,7 +22,10 @@ peer.on('open', id => {
 });
 
 peer.on('call', call => {
-    call.
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        localView.srcObject = stream;
+        call.answer(stream);
+    });
 });
 
 peer.on('connection', dc => {

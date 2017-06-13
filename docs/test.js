@@ -10,6 +10,7 @@ btnStart.onclick = evt => {
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
         localView.srcObject = stream;
         call = peer.call(callTo.value, stream);
+        callSetup(call);
     });
     dcSetup(dc);
 };
@@ -22,16 +23,25 @@ peer.on('open', id => {
 });
 
 peer.on('call', call => {
-    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-        localView.srcObject = stream;
-        call.answer(stream);
-    });
 });
 
 peer.on('connection', dc => {
     dcSetup(dc);
 });
 
+function callSetup(call) {
+    if (!localView.srcObject) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+            localView.srcObject = stream;
+            call.answer(stream);
+        });
+    } else {
+        call.answer(localView.srcobject);
+    }
+    call.on('stream', stream => {
+        remoteView.srcObject = stream;
+    })
+}
 function dcSetup(dc) {
     inputMessage.style.display = '';
     inputMessage.onkeyup = evt => {

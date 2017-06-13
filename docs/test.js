@@ -4,6 +4,7 @@ var dc = null;
 peer.on('open', id => {
     console.log('peer "onopen"');
     myIdDisp.textContent = id;
+    btnStart.style.display = '';
     getRmoteIds();
 });
 

@@ -32,7 +32,7 @@ peer.on('connection', function (dc) {
 });
 
 btnStart.onclick = evt => {
-    dc = peer.connect('dest-peer-id');
+    dc = peer.connect(callTo.value);
 };
 
 function getRmoteIds() {
